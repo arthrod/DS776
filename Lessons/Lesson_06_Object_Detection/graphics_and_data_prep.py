@@ -9,7 +9,6 @@ import torch
 from pathlib import Path
 from matplotlib.patches import Rectangle, Patch
 import matplotlib.pyplot as plt
-import requests
 from torchvision import ops
 from torchvision.io import read_image
 import ipywidgets as widgets
@@ -25,6 +24,8 @@ from ipywidgets import interact, widgets
 from introdl.idlmam import save_checkpoint
 from introdl.utils import load_model, load_results
 import warnings
+from security import safe_requests
+
 warnings.filterwarnings("ignore", category=UserWarning, module="tqdm.autonotebook")
 from tqdm.autonotebook import tqdm
 
@@ -322,7 +323,7 @@ def download_pennfudanped(target_dir: Path) -> None:
     target_dir.mkdir(parents=True, exist_ok=True)
 
     print("Downloading PennFudanPed dataset...")
-    response = requests.get(dataset_url, stream=True)
+    response = safe_requests.get(dataset_url, stream=True)
     with open(zip_path, "wb") as file:
         for chunk in response.iter_content(chunk_size=8192):
             file.write(chunk)
