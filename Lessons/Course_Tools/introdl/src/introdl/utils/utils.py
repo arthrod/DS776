@@ -29,6 +29,7 @@ import subprocess
 import tempfile
 import shutil
 import inspect
+from security import safe_requests
 
 
 # Fallback-safe normalize import
@@ -567,7 +568,6 @@ def hf_download(checkpoint_file, repo_id, token=None):
     - None: The file is saved directly to the checkpoint_file location.
     """
     import os
-    import requests
 
     # Construct the file download URL
     base_url = "https://huggingface.co"
@@ -575,7 +575,7 @@ def hf_download(checkpoint_file, repo_id, token=None):
     file_url = f"{base_url}/{repo_id}/resolve/main/{filename}"
 
     # Download the file directly
-    response = requests.get(file_url, stream=True, headers={"Authorization": f"Bearer {token}"} if token else {})
+    response = safe_requests.get(file_url, stream=True, headers={"Authorization": f"Bearer {token}"} if token else {})
     if response.status_code != 200:
         raise FileNotFoundError(f"Failed to download '{filename}' from {file_url}. Status code: {response.status_code}")
 
