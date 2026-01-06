@@ -34,3 +34,4 @@ torchvision
 tqdm
 transformers>=4.49.0
 ultralytics
+aiohttp>=3.13.3 # not directly required, pinned by Snyk to avoid a vulnerability
